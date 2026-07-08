@@ -1,0 +1,163 @@
+{
+  "agents": {
+    "code_writer": {
+      "allowed_inputs": [
+        "spec/problem.md",
+        "guides/code-writer.md"
+      ],
+      "cannot_see": [
+        "outputs/test_writer/test_cases.json",
+        "outputs/test_writer/test_solution.py"
+      ]
+    },
+    "qa_arbiter": {
+      "allowed_inputs": [
+        "spec/problem.md",
+        "guides/qa-arbiter.md",
+        "outputs/code_writer/solution.py",
+        "outputs/test_writer/test_cases.json",
+        "hidden_oracle"
+      ],
+      "feedback_policy": "may assign blame backward on the DAG without revealing forbidden artifacts"
+    },
+    "test_writer": {
+      "allowed_inputs": [
+        "spec/problem.md",
+        "guides/test-writer.md"
+      ],
+      "cannot_see": [
+        "outputs/code_writer/solution.py"
+      ]
+    }
+  },
+  "artifacts": {
+    "guides": {
+      "code_writer": {
+        "bytes": 227,
+        "digest": "aaeca52806f717d9f389d0734e167b1dfb3a7eba71159c6dcfa802a871a7de04",
+        "logical_path": "guides/code-writer.md"
+      },
+      "qa_arbiter": {
+        "bytes": 307,
+        "digest": "b36de8088e1eceb342bc89f4e9dc06cd5fb1666714f9bd141b1c0df895a0c0f1",
+        "logical_path": "guides/qa-arbiter.md"
+      },
+      "test_writer": {
+        "bytes": 233,
+        "digest": "25929bb1184417ec24a313724182a5d49bc12633ad7c0681c84f626de0a11cb7",
+        "logical_path": "guides/test-writer.md"
+      }
+    },
+    "outputs": {
+      "code_writer": {
+        "bytes": 751,
+        "digest": "9a586fe79e35969b5bd09c71d048182f4df2a2e1e6ce0f47a9bcf82a5a343419",
+        "logical_path": "outputs/code_writer/solution.py"
+      },
+      "test_writer_cases": {
+        "bytes": 465,
+        "digest": "c9040c9078d250c01e2895f796dde0681febabd243585e3b41bb79015d4d1189",
+        "logical_path": "outputs/test_writer/test_cases.json"
+      },
+      "test_writer_pytest": {
+        "bytes": 934,
+        "digest": "7ed40265ed2fad382bb6fe61d1aa8d5edb0a759b35f3ef777a3bda7548417d96",
+        "logical_path": "outputs/test_writer/test_solution.py"
+      }
+    },
+    "spec": {
+      "bytes": 535,
+      "digest": "c1e00b03ef7dd38d4e863859ce296e80a4b00ce41ba26a9df45eda0df27051a3",
+      "logical_path": "spec/problem.md"
+    }
+  },
+  "claim": "code and test writers receive disjoint context manifests derived from the same spec; QA arbitrates disagreements with a hidden oracle",
+  "dag": [
+    [
+      "spec/problem.md",
+      "code_writer"
+    ],
+    [
+      "spec/problem.md",
+      "test_writer"
+    ],
+    [
+      "outputs/code_writer/solution.py",
+      "qa_arbiter"
+    ],
+    [
+      "outputs/test_writer/test_cases.json",
+      "qa_arbiter"
+    ],
+    [
+      "hidden_oracle",
+      "qa_arbiter"
+    ]
+  ],
+  "demo": "hermetic_agents",
+  "leak_checks": [
+    {
+      "allowed_input_count": 2,
+      "leaked_paths": [],
+      "passed": true,
+      "role": "code_writer"
+    },
+    {
+      "allowed_input_count": 2,
+      "leaked_paths": [],
+      "passed": true,
+      "role": "test_writer"
+    }
+  ],
+  "model": "deterministic local harness",
+  "qa": {
+    "disagreements": [
+      {
+        "blame": "test_writer",
+        "case": "uppercase-name",
+        "implementation": {
+          "name": "gizmo",
+          "quantity": 4,
+          "unit_cents": 200
+        },
+        "line": "Gizmo:4@2.00",
+        "oracle_expected": {
+          "name": "gizmo",
+          "quantity": 4,
+          "unit_cents": 200
+        },
+        "test_expected": {
+          "name": "Gizmo",
+          "quantity": 4,
+          "unit_cents": 200
+        }
+      }
+    ],
+    "generated_case_results": [
+      {
+        "id": "basic",
+        "passed": true
+      },
+      {
+        "id": "round-half-up",
+        "passed": true
+      },
+      {
+        "id": "uppercase-name",
+        "passed": false
+      }
+    ],
+    "hidden_oracle_results": [
+      {
+        "id": "hidden-whitespace-casefold",
+        "passed": true
+      },
+      {
+        "id": "hidden-small-rounding",
+        "passed": true
+      }
+    ],
+    "verdict": "test_writer_fault"
+  },
+  "status": "success"
+}

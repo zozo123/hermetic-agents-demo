@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hermetic Agents - code and tests without shared context</title>
+    <meta
+      name="description"
+      content="A runnable demo of hermetic agents: separate code and test writers get the same spec but disjoint context, while QA arbitrates disagreements with a hidden oracle."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Hermetic agents, runnable end to end" />
+    <meta property="og:description" content="Separate coder and tester contexts, leak-checked manifests, and a QA arbiter that can blame the test when the implementation is right." />
+    <meta property="og:url" content="https://zozo123.github.io/hermetic-agents-demo/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <p class="kicker">Hermetic agents / QA arbitration / Bazel e2e</p>
+        <h1>Code and tests from one spec, with no shared scratchpad.</h1>
+        <p class="lede">
+          This demo turns the "hermetic agents" idea into a runnable artifact:
+          a code writer and a test writer receive the same problem spec but
+          different input manifests. The code writer cannot see generated tests.
+          The test writer cannot see implementation. QA reads both outputs plus
+          a hidden oracle and assigns blame when they disagree.
+        </p>
+        <div class="actions">
+          <a href="./metrics/hermetic-agents-e2e.json">Raw e2e JSON</a>
+          <a href="./metrics/hermetic-agents-e2e.md">Transcript</a>
+          <a href="https://github.com/zozo123/hermetic-agents-demo">GitHub repo</a>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>The proof</h2>
+        <p>
+          The generated test suite intentionally contains one wrong expectation:
+          it expects <code>Gizmo</code> to remain capitalized, even though the
+          spec requires case-folding. The implementation returns
+          <code>gizmo</code>. QA compares both sides to the oracle and assigns
+          the disagreement to <code>test_writer</code>.
+        </p>
+        <pre><code>{
+  "verdict": "test_writer_fault",
+  "case": "uppercase-name",
+  "blame": "test_writer"
+}</code></pre>
+      </section>
+
+      <section class="panel">
+        <h2>DAG contract</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Role</th>
+                <th>Can read</th>
+                <th>Cannot read</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Code writer</b></td>
+                <td><code>spec/problem.md</code>, <code>guides/code-writer.md</code></td>
+                <td>Generated tests and test cases</td>
+              </tr>
+              <tr>
+                <td><b>Test writer</b></td>
+                <td><code>spec/problem.md</code>, <code>guides/test-writer.md</code></td>
+                <td>Implementation output</td>
+              </tr>
+              <tr>
+                <td><b>QA arbiter</b></td>
+                <td>Spec, both outputs, hidden oracle</td>
+                <td>May send blame backward, not forbidden artifacts</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel grid">
+        <article>
+          <span class="number">01</span>
+          <h2>Distill</h2>
+          <p>Write one spec and role guides that replace broad RAG/context access.</p>
+        </article>
+        <article>
+          <span class="number">02</span>
+          <h2>Isolate</h2>
+          <p>Materialize manifests so each writer gets only its allowed inputs.</p>
+        </article>
+        <article>
+          <span class="number">03</span>
+          <h2>Arbitrate</h2>
+          <p>QA compares implementation, tests, and oracle, then assigns blame.</p>
+        </article>
+      </section>
+
+      <section class="panel">
+        <h2>Run it</h2>
+        <pre><code>./scripts/run_hermetic_agents_demo.sh
+python3 scripts/hermetic_agents_demo.py --self-test
+bazelisk test //:hermetic_agents_e2e_test</code></pre>
+      </section>
+    </main>
+  </body>
+</html>

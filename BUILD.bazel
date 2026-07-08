@@ -1,0 +1,12 @@
+load("@rules_python//python:defs.bzl", "py_test")
+
+package(default_visibility = ["//visibility:public"])
+
+py_test(
+    name = "hermetic_agents_e2e_test",
+    srcs = ["scripts/hermetic_agents_demo.py"],
+    args = ["--self-test"],
+    legacy_create_init = 0,
+    main = "scripts/hermetic_agents_demo.py",
+    python_version = "PY3",
+)

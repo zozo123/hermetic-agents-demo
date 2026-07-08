@@ -19,6 +19,7 @@ Demonstrate hermetic agents with a small, deterministic e2e proof:
 ./scripts/run_hermetic_agents_demo.sh
 python3 scripts/hermetic_agents_demo.py --self-test
 bazelisk test //:hermetic_agents_e2e_test
+crabbox job run hermetic-agents
 ```
 
 ## Publishing
@@ -27,6 +28,18 @@ bazelisk test //:hermetic_agents_e2e_test
 - Pages: `https://zozo123.github.io/hermetic-agents-demo/`
 - Pages source: `docs/`
 - Workflow: `.github/workflows/pages.yml`
+
+## Crabbox Path
+
+`.crabbox.yaml` defines one job:
+
+```bash
+crabbox job run hermetic-agents
+```
+
+It uses `provider: islo`, runs `./scripts/run_hermetic_agents_demo.sh`, requires
+`docs/metrics/hermetic-agents-e2e.json`, and downloads the JSON/Markdown proof
+under `.crabbox/proofs/`.
 
 ## Important Result
 

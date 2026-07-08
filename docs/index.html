@@ -18,7 +18,7 @@
   <body>
     <main class="shell">
       <section class="hero">
-        <p class="kicker">Hermetic agents / QA arbitration / Bazel e2e</p>
+        <p class="kicker">Hermetic agents / QA arbitration / Bazel / Crabbox</p>
         <h1>Code and tests from one spec, with no shared scratchpad.</h1>
         <p class="lede">
           This demo turns the "hermetic agents" idea into a runnable artifact:
@@ -31,6 +31,44 @@
           <a href="./metrics/hermetic-agents-e2e.json">Raw e2e JSON</a>
           <a href="./metrics/hermetic-agents-e2e.md">Transcript</a>
           <a href="https://github.com/zozo123/hermetic-agents-demo">GitHub repo</a>
+          <a href="https://github.com/openclaw/crabbox">Crabbox</a>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>Run matrix</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Path</th>
+                <th>Command</th>
+                <th>Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Local</b></td>
+                <td><code>./scripts/run_hermetic_agents_demo.sh</code></td>
+                <td>JSON and Markdown under <code>docs/metrics/</code></td>
+              </tr>
+              <tr>
+                <td><b>Bazel</b></td>
+                <td><code>bazelisk test //:hermetic_agents_e2e_test</code></td>
+                <td>Hermetic test target for CI and local validation</td>
+              </tr>
+              <tr>
+                <td><b>GitHub Actions</b></td>
+                <td><code>.github/workflows/ci.yml</code></td>
+                <td>Public green check on every push</td>
+              </tr>
+              <tr>
+                <td><b>Crabbox + Islo</b></td>
+                <td><code>crabbox job run hermetic-agents</code></td>
+                <td>Required proof JSON downloaded to <code>.crabbox/proofs/</code></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -101,10 +139,28 @@
       </section>
 
       <section class="panel">
+        <h2>Crabbox path</h2>
+        <p>
+          The repo includes a <code>.crabbox.yaml</code> job for delegated Islo
+          execution. Crabbox syncs the checkout, Islo owns the remote sandbox
+          lifecycle, and the run is gated on the proof JSON existing after the
+          command succeeds.
+        </p>
+        <pre><code>export CRABBOX_ISLO_API_KEY=ak_...
+crabbox job run hermetic-agents
+
+crabbox run --provider islo \
+  --require-artifact docs/metrics/hermetic-agents-e2e.json \
+  --download docs/metrics/hermetic-agents-e2e.json=.crabbox/proofs/hermetic-agents-e2e.json \
+  --shell './scripts/run_hermetic_agents_demo.sh'</code></pre>
+      </section>
+
+      <section class="panel">
         <h2>Run it</h2>
         <pre><code>./scripts/run_hermetic_agents_demo.sh
 python3 scripts/hermetic_agents_demo.py --self-test
-bazelisk test //:hermetic_agents_e2e_test</code></pre>
+bazelisk test //:hermetic_agents_e2e_test
+crabbox job run hermetic-agents</code></pre>
       </section>
     </main>
   </body>

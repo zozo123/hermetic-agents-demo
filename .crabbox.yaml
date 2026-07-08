@@ -1,0 +1,32 @@
+profile: hermetic-agents-e2e
+provider: islo
+target: linux
+
+islo:
+  workdir: hermetic-agents-demo
+
+sync:
+  exclude:
+    - bazel-*
+    - .crabbox/**
+    - __pycache__/**
+
+profiles:
+  hermetic-agents-e2e:
+    artifactGlobs:
+      - docs/metrics/hermetic-agents-e2e.json
+      - docs/metrics/hermetic-agents-e2e.md
+
+jobs:
+  hermetic-agents:
+    provider: islo
+    target: linux
+    profile: hermetic-agents-e2e
+    shell: true
+    command: ./scripts/run_hermetic_agents_demo.sh
+    requiredArtifacts:
+      - docs/metrics/hermetic-agents-e2e.json
+    downloads:
+      - docs/metrics/hermetic-agents-e2e.json=.crabbox/proofs/hermetic-agents-e2e.json
+      - docs/metrics/hermetic-agents-e2e.md=.crabbox/proofs/hermetic-agents-e2e.md
+    stop: always

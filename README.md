@@ -25,6 +25,22 @@ python3 scripts/hermetic_agents_demo.py --self-test
 bazelisk test //:hermetic_agents_e2e_test
 ```
 
+Run the same proof through Crabbox on a delegated Islo sandbox:
+
+```bash
+export CRABBOX_ISLO_API_KEY=ak_...
+crabbox job run hermetic-agents
+```
+
+Or without the job wrapper:
+
+```bash
+crabbox run --provider islo \
+  --require-artifact docs/metrics/hermetic-agents-e2e.json \
+  --download docs/metrics/hermetic-agents-e2e.json=.crabbox/proofs/hermetic-agents-e2e.json \
+  --shell './scripts/run_hermetic_agents_demo.sh'
+```
+
 The demo writes:
 
 - `docs/metrics/hermetic-agents-e2e.json`
@@ -43,5 +59,6 @@ The demo writes:
 - `scripts/hermetic_agents_demo.py`: deterministic coder/tester/QA harness.
 - `scripts/run_hermetic_agents_demo.sh`: local runner that updates Pages metrics.
 - `BUILD.bazel`: Bazel e2e target.
+- `.crabbox.yaml`: Crabbox/Islo job that requires and downloads the proof JSON.
 - `docs/`: GitHub Pages static site.
 - `context/`: short handoff pack for other models and harnesses.

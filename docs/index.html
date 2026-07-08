@@ -156,6 +156,44 @@ crabbox run --provider islo \
       </section>
 
       <section class="panel">
+        <h2>Why Crabbox fits</h2>
+        <p>
+          Crabbox does not become the agent framework here. The repo owns the
+          specs, role guides, oracle, and QA policy. Crabbox owns the remote
+          execution receipt: sync this checkout, run this command, require this
+          proof file, download bounded evidence, and clean up the runner.
+        </p>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Concept</th>
+                <th>In this demo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>Run</b></td>
+                <td>One execution of the hermetic coder/tester/QA harness.</td>
+              </tr>
+              <tr>
+                <td><b>Provider</b></td>
+                <td>Islo by default; any supported Linux runner can execute the same proof.</td>
+              </tr>
+              <tr>
+                <td><b>Artifacts</b></td>
+                <td><code>hermetic-agents-e2e.json</code> is the required proof gate.</td>
+              </tr>
+              <tr>
+                <td><b>Station</b></td>
+                <td>Future fit for long-running model-backed agents, not required for this one-shot proof.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
         <h2>Run it</h2>
         <pre><code>./scripts/run_hermetic_agents_demo.sh
 python3 scripts/hermetic_agents_demo.py --self-test

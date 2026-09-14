@@ -10,28 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Capture Herdr application prompt
+      - name: Capture Herdr application screen
         shell: bash
         run: |
           set +e
           mkdir -p ~/.ssh
           ssh-keyscan -t ed25519 join.herdr.dev >> ~/.ssh/known_hosts 2>/dev/null
           ssh-keygen -q -t ed25519 -N '' -f /tmp/herdr_applicant_key
-          echo '--- host fingerprint ---'
-          ssh-keygen -lf ~/.ssh/known_hosts || true
-          echo '--- applicant key fingerprint ---'
-          ssh-keygen -lf /tmp/herdr_applicant_key.pub || true
           echo '--- session ---'
-          timeout 18s bash -lc 'tail -f /dev/null | script -qefc "TERM=xterm-256color ssh -tt -i /tmp/herdr_applicant_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes apply@join.herdr.dev" /tmp/herdr_session.log'
-          python3 - <<'PY'
-          import re
-          from pathlib import Path
-          p = Path('/tmp/herdr_session.log')
-          data = p.read_text(errors='replace') if p.exists() else ''
-          data = re.sub(r'\x1b\][^\x07]*(?:\x07|\x1b\\)', '', data)
-          data = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', data)
-          data = data.replace('\r', '\n')
-          print(data[-40000:])
-          PY
+          timeout 20s bash -lc 'tail -f /dev/null | script -qefc "stty rows 45 cols 140; export TERM=xterm-256color; ssh -tt -i /tmp/herdr_applicant_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes apply@join.herdr.dev" /tmp/herdr_session.log'
+          echo '--- RAW SESSION BASE64 ---'
+          base64 -w0 /tmp/herdr_session.log || true
+          echo
           rm -f /tmp/herdr_applicant_key /tmp/herdr_applicant_key.pub
           exit 0

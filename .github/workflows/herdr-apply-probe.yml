@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
-      - name: Render Herdr application screen
+      - name: Render first Herdr application step
         shell: bash
         run: |
           set -euo pipefail
@@ -23,29 +23,27 @@ jobs:
           import pexpect, pyte
 
           cmd = "ssh -tt -i /tmp/herdr_applicant_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes apply@join.herdr.dev"
-          env = os.environ.copy()
-          env["TERM"] = "xterm-256color"
+          env = os.environ.copy(); env["TERM"] = "xterm-256color"
           child = pexpect.spawn("/bin/bash", ["-lc", cmd], env=env, encoding=None, timeout=1)
           child.setwinsize(45, 140)
+          screen = pyte.Screen(140, 45); stream = pyte.Stream(screen)
 
-          screen = pyte.Screen(140, 45)
-          stream = pyte.Stream(screen)
-          deadline = time.time() + 10
-          while time.time() < deadline:
-              try:
-                  chunk = child.read_nonblocking(size=4096, timeout=0.5)
-                  if chunk:
-                      stream.feed(chunk.decode("utf-8", "replace"))
-              except pexpect.TIMEOUT:
-                  pass
-              except pexpect.EOF:
-                  break
+          def pump(seconds):
+              deadline = time.time() + seconds
+              while time.time() < deadline:
+                  try:
+                      chunk = child.read_nonblocking(size=4096, timeout=0.25)
+                      if chunk: stream.feed(chunk.decode("utf-8", "replace"))
+                  except pexpect.TIMEOUT: pass
+                  except pexpect.EOF: return
 
-          print("--- HERDR VISIBLE SCREEN ---")
+          pump(4)
+          child.send(b"\r")
+          pump(4)
+          print("--- HERDR STEP 1 ---")
           for i, line in enumerate(screen.display, 1):
               text = line.rstrip()
-              if text:
-                  print(f"{i:02d}: {text}")
+              if text: print(f"{i:02d}: {text}")
           print("--- END SCREEN ---")
           child.close(force=True)
           PY

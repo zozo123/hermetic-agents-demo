@@ -3,29 +3,70 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hermetic Agents - code and tests without shared context</title>
+    <title>Hermetic Agents Demo (deterministic) — Yossi Eliaz</title>
     <meta
       name="description"
-      content="A runnable demo of hermetic agents: separate code and test writers get the same spec but disjoint context, while QA arbitrates disagreements with a hidden oracle."
+      content="Deterministic demo: scripted code and test writers get the same spec but disjoint inputs; a QA arbiter with a hidden oracle assigns blame."
     />
+    <meta name="author" content="Yossi Eliaz" />
+    <link rel="canonical" href="https://zozo123.github.io/hermetic-agents-demo/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Hermetic agents, runnable end to end" />
-    <meta property="og:description" content="Separate coder and tester contexts, leak-checked manifests, and a QA arbiter that can blame the test when the implementation is right." />
+    <meta property="og:site_name" content="Yossi Eliaz" />
+    <meta property="og:title" content="Hermetic Agents Demo (deterministic) — Yossi Eliaz" />
+    <meta property="og:description" content="Deterministic demo: scripted code and test writers get the same spec but disjoint inputs; a QA arbiter with a hidden oracle assigns blame." />
     <meta property="og:url" content="https://zozo123.github.io/hermetic-agents-demo/" />
+    <meta property="og:image" content="https://zozo123.github.io/hermetic-agents-demo/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Hermetic agents demo: deterministic coder / tester / QA proof, by Yossi Eliaz" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Hermetic Agents Demo (deterministic) — Yossi Eliaz" />
+    <meta name="twitter:description" content="Deterministic demo: scripted code and test writers get the same spec but disjoint inputs; a QA arbiter with a hidden oracle assigns blame." />
+    <meta name="twitter:image" content="https://zozo123.github.io/hermetic-agents-demo/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Hermetic Agents Demo",
+        "description": "Deterministic demo: scripted code and test writers get the same spec but disjoint inputs; a QA arbiter with a hidden oracle assigns blame.",
+        "url": "https://zozo123.github.io/hermetic-agents-demo/",
+        "codeRepository": "https://github.com/zozo123/hermetic-agents-demo",
+        "programmingLanguage": "Python",
+        "image": "https://zozo123.github.io/hermetic-agents-demo/og.png",
+        "datePublished": "2026-07-08",
+        "dateModified": "2026-10-22",
+        "author": {
+          "@type": "Person",
+          "name": "Yossi Eliaz",
+          "url": "https://yossieliaz.netlify.app/",
+          "sameAs": ["https://github.com/zozo123", "https://www.linkedin.com/in/yossi-eliaz/"]
+        }
+      }
+    </script>
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <main class="shell">
       <section class="hero">
-        <p class="kicker">Hermetic agents / QA arbitration / Bazel / Crabbox</p>
+        <p class="kicker">Deterministic demo / scripted roles / Bazel / Crabbox</p>
         <h1>Code and tests from one spec, with no shared scratchpad.</h1>
+        <p class="byline">
+          By <a href="https://yossieliaz.netlify.app/">Yossi Eliaz</a> · July 2026 ·
+          <a href="https://zozo123.github.io/">More writing &amp; experiments</a>
+        </p>
         <p class="lede">
-          This demo turns the "hermetic agents" idea into a runnable artifact:
-          a code writer and a test writer receive the same problem spec but
-          different input manifests. The code writer cannot see generated tests.
-          The test writer cannot see implementation. QA reads both outputs plus
-          a hidden oracle and assigns blame when they disagree.
+          A deterministic demo of the "hermetic agents" idea. A scripted code
+          writer and a scripted test writer get the same spec but disjoint input
+          manifests: the code writer cannot see the tests, and the test writer
+          cannot see the implementation. A QA arbiter with a hidden oracle blames
+          the test writer for the one seeded wrong test. No language model is
+          called. The proof runs locally, in Bazel and in GitHub Actions, and the
+          repo includes a Crabbox job for running it on an islo.dev sandbox.
+        </p>
+        <p class="note">
+          <b>Status:</b> deterministic demo. The code writer, test writer and QA
+          arbiter are scripted roles in <code>scripts/hermetic_agents_demo.py</code>,
+          and the wrong test expectation is seeded on purpose.
         </p>
         <div class="actions">
           <a href="./metrics/hermetic-agents-e2e.json">Raw e2e JSON</a>
@@ -86,6 +127,10 @@
   "case": "uppercase-name",
   "blame": "test_writer"
 }</code></pre>
+        <p class="note">
+          Scripted run: the disagreement is planted to show that QA can blame
+          the test.
+        </p>
       </section>
 
       <section class="panel">
@@ -200,6 +245,16 @@ python3 scripts/hermetic_agents_demo.py --self-test
 bazelisk test //:hermetic_agents_e2e_test
 crabbox job run hermetic-agents</code></pre>
       </section>
+
+      <footer class="footer">
+        <p>
+          By <a href="https://yossieliaz.netlify.app/">Yossi Eliaz</a> ·
+          <a href="https://zozo123.github.io/">zozo123.github.io</a> ·
+          <a href="https://github.com/zozo123/hermetic-agents-demo">Source</a> ·
+          Uses <a href="https://bazel.build/">Bazel</a> and
+          <a href="https://github.com/openclaw/crabbox">Crabbox</a> (openclaw)
+        </p>
+      </footer>
     </main>
   </body>
 </html>

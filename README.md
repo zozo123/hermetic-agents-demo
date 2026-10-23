@@ -1,21 +1,16 @@
 # Hermetic Agents Demo
 
-Standalone demo for "hermetic agents": separate code-writing and test-writing
-agents work from the same spec, but cannot see each other's outputs. A QA agent
-gets both outputs plus an oracle and assigns blame when implementation and tests
-disagree.
+A deterministic demo of "hermetic agents" for people designing agent coding
+pipelines: scripted code-writing and test-writing roles work from the same spec
+but cannot see each other's outputs, and a QA arbiter with a hidden oracle
+assigns blame when they disagree.
 
-Target repo:
+Live page: https://zozo123.github.io/hermetic-agents-demo/ · By
+[Yossi Eliaz](https://yossieliaz.netlify.app/)
 
-```text
-https://github.com/zozo123/hermetic-agents-demo
-```
-
-Target Pages site:
-
-```text
-https://zozo123.github.io/hermetic-agents-demo/
-```
+Status: deterministic demo (July 2026). The roles are scripted in
+`scripts/hermetic_agents_demo.py`; no language model is called, and the wrong
+test expectation is seeded on purpose.
 
 ## Run Locally
 
@@ -25,7 +20,8 @@ python3 scripts/hermetic_agents_demo.py --self-test
 bazelisk test //:hermetic_agents_e2e_test
 ```
 
-Run the same proof through Crabbox on a delegated Islo sandbox:
+Run the same proof through [Crabbox](https://github.com/openclaw/crabbox) on a
+delegated islo.dev sandbox:
 
 ```bash
 export CRABBOX_ISLO_API_KEY=ak_...

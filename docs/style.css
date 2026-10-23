@@ -174,3 +174,34 @@ td code {
     grid-template-columns: 1fr;
   }
 }
+
+.byline {
+  margin: 1.25rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.note {
+  max-width: 70ch;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent-2);
+  background: rgba(126, 224, 129, 0.06);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.note b,
+.note code {
+  color: var(--ink);
+}
+
+.footer {
+  margin: 3rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.95rem;
+}

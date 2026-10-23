@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="gy" cx="12%" cy="4%" r="55%">
+      <stop offset="0" stop-color="#f5c84b" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#f5c84b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gg" cx="92%" cy="18%" r="60%">
+      <stop offset="0" stop-color="#7ee081" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="#7ee081" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#070807"/>
+  <rect width="1200" height="630" fill="url(#gy)"/>
+  <rect width="1200" height="630" fill="url(#gg)"/>
+  <rect x="40" y="40" width="1120" height="550" rx="28" fill="none" stroke="#34382e" stroke-width="2"/>
+
+  <text x="96" y="132" font-family="Menlo, 'SF Mono', monospace" font-size="22" letter-spacing="4" fill="#7ee081">DETERMINISTIC DEMO / SCRIPTED ROLES</text>
+  <text x="92" y="250" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="bold" letter-spacing="-3" fill="#f4f0df">Hermetic agents demo</text>
+  <text x="96" y="318" font-family="Georgia, 'Times New Roman', serif" font-size="38" fill="#a9aa99">Deterministic coder / tester / QA proof</text>
+
+  <g font-family="Menlo, 'SF Mono', monospace" font-size="21">
+    <rect x="96" y="372" width="230" height="64" rx="32" fill="#111511" stroke="#34382e" stroke-width="2"/>
+    <text x="211" y="411" text-anchor="middle" fill="#f4f0df">code writer</text>
+    <rect x="96" y="452" width="230" height="64" rx="32" fill="#111511" stroke="#34382e" stroke-width="2"/>
+    <text x="211" y="491" text-anchor="middle" fill="#f4f0df">test writer</text>
+    <path d="M326 404 H410 V444 H452 M326 484 H410 V444" fill="none" stroke="#5a5f4f" stroke-width="2"/>
+    <rect x="452" y="412" width="230" height="64" rx="32" fill="rgba(245,200,75,0.10)" stroke="#f5c84b" stroke-width="2"/>
+    <text x="567" y="451" text-anchor="middle" fill="#f5c84b">QA arbiter</text>
+    <text x="704" y="451" fill="#ff6b4a">blame: test_writer</text>
+  </g>
+
+  <text x="1104" y="530" text-anchor="end" font-family="Georgia, 'Times New Roman', serif" font-size="34" fill="#f4f0df">Yossi Eliaz</text>
+  <text x="1104" y="562" text-anchor="end" font-family="Menlo, 'SF Mono', monospace" font-size="18" fill="#a9aa99">zozo123.github.io/hermetic-agents-demo</text>
+</svg>
